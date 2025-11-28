@@ -33,7 +33,9 @@ export default function Licenses() {
       });
 
       setLicenses((prev) =>
-        prev.map((l) => (l.licenseNumber === id ? { ...l, licenseStatus: newStatus } : l))
+        prev.map((l) =>
+          l.licenseNumber === id ? { ...l, licenseStatus: newStatus } : l
+        )
       );
     } catch (e) {
       console.error(e);
@@ -75,7 +77,7 @@ export default function Licenses() {
       </div>
 
       {/* LICENSE TABLE */}
-      <div className="bg-white shadow rounded-xl p-4">
+      <div className="bg-white shadow rounded-xl p-4 overflow-auto">
         <table className="w-full">
           <thead>
             <tr className="text-left border-b">
@@ -83,6 +85,7 @@ export default function Licenses() {
               <th className="p-3">Full Name</th>
               <th className="p-3">Status</th>
               <th className="p-3">Expiry</th>
+              <th className="p-3">Blockchain Hash</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -91,27 +94,35 @@ export default function Licenses() {
             {licenses.map((l) => (
               <tr key={l.internalNurseId} className="border-b hover:bg-gray-50">
                 <td className="p-3 font-medium">{l.internalNurseId}</td>
-                <td className="p-3">{l.firstName} {l.lastName}</td>
+                <td className="p-3">
+                  {l.firstName} {l.lastName}
+                </td>
                 <td className="p-3">{l.licenseStatus}</td>
                 <td className="p-3">{l.expiryDate}</td>
+                <td className="p-3 font-mono text-sm break-all">
+                  {l.blockchainTx
+                    ? `${l.blockchainTx.slice(0, 15)}...`
+                    : ""}
+                </td>
 
                 {/* ACTION BUTTONS */}
                 <td className="p-3 text-right">
                   <div className="flex justify-end gap-3">
-
                     {/* View/Edit */}
-                    <Link
+                    {/* <Link
                       to={`/admin/licenses/${l.internalNurseId}`}
                       className="px-3 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
                     >
                       View
-                    </Link>
+                    </Link> */}
 
                     {/* Change Status */}
                     <select
                       className="border rounded-lg px-2 py-1"
                       value={l.licenseStatus}
-                      onChange={(e) => updateStatus(l.licenseNumber, e.target.value)}
+                      onChange={(e) =>
+                        updateStatus(l.licenseNumber, e.target.value)
+                      }
                     >
                       <option value="Active">Active</option>
                       <option value="Inactive">Inactive</option>
@@ -128,7 +139,6 @@ export default function Licenses() {
                     >
                       Revoke
                     </button>
-
                   </div>
                 </td>
               </tr>

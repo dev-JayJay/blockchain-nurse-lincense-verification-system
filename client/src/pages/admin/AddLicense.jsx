@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  * Admin AddLicense multi-step form
@@ -23,14 +24,12 @@ const LICENSE_TYPES = [
   "Advanced Practice Registered Nurse (APRN)",
   "Nurse Educator",
   "Nurse Specialist",
-  "Others",
 ];
 const LICENSE_STATUSES = [
   "Active",
   "Inactive",
   "Suspended",
   "Revoked",
-  "Probation",
   "Pending Renewal",
 ];
 const CERTIFICATIONS = [
@@ -49,6 +48,7 @@ function FieldLabel({ children, required }) {
 }
 
 export default function AddLicense() {
+  const {user} = useAuth();
   const [step, setStep] = useState(1);
 
   const [form, setForm] = useState({
@@ -67,7 +67,7 @@ export default function AddLicense() {
 
     // Section 2: License & Registration
     licenseType: LICENSE_TYPES[0],
-    licenseNumber: "",
+    licenseNumber: `NUR-${Date.now()}`,
     issueDate: "",
     expiryDate: "",
     licenseStatus: LICENSE_STATUSES[0],
@@ -84,8 +84,8 @@ export default function AddLicense() {
     attestation: false,
     adminESignature: "",
     // auto-captured (display-only)
-    adminUsername: "admin.user", // placeholder - auto-filled in real system
-    adminStaffId: "STAFF-001",
+    adminUsername: user.email, // placeholder - auto-filled in real system
+    adminStaffId: user._id,
     adminTitle: "Registrar",
     adminDepartment: "Licensing",
     adminTimestamp: new Date().toISOString(),

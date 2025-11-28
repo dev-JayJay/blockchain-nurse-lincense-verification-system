@@ -82,7 +82,7 @@ export const getNurse = async (req, res) => {
 // Get all nurses
 export const getAllNurses = async (req, res) => {
   try {
-    const nurses = await Nurse.find();
+    const nurses = await Nurse.find().sort({ createdAt: -1 });
     res.json(nurses);
   } catch (err) {
     res.status(500).json({ error: err.message });

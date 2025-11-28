@@ -3,7 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 export default function Profile() {
   const { user, logout } = useAuth();
 
-
   if (!user) {
     return <p>Loading...</p>;
   }
@@ -11,12 +10,9 @@ export default function Profile() {
   return (
     <div className="min-h-screen w-full  bg-gray-100 p-6">
       <div className="max-w-md w-full space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Admin Profile
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-800">Admin Profile</h1>
 
         <div className="bg-white p-6 rounded-lg shadow space-y-6">
-
           {/* Full name */}
           <div className="space-y-1">
             <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
@@ -69,7 +65,6 @@ export default function Profile() {
           >
             Logout
           </button>
-
         </div>
       </div>
     </div>

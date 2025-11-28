@@ -90,8 +90,8 @@ export default function Login() {
         </form>
 
         <div className="text-center">
-          <a href="#" className="text-blue-600 hover:underline text-sm">
-            Forgot password?
+          <a href="/verifier/register" className="text-blue-600 hover:underline text-sm">
+            create an account?
           </a>
         </div>
       </div>

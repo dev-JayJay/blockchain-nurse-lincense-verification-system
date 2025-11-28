@@ -67,7 +67,7 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white p-6 rounded-xl shadow">
+      {/* <div className="bg-white p-6 rounded-xl shadow">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
 
         <ul className="space-y-3 text-gray-700">
@@ -81,7 +81,7 @@ export default function Dashboard() {
             • Admin approved license renewal for <span className="font-semibold">RN-09231</span>.
           </li>
         </ul>
-      </div>
+      </div> */}
 
     </div>
   );

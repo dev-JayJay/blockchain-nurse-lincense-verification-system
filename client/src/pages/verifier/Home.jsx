@@ -56,7 +56,7 @@ export default function VerifierHome() {
             <tr className="border-b">
               <th className="p-2">License #</th>
               <th className="p-2">Status</th>
-              <th className="p-2">Verifier</th>
+              {/* <th className="p-2">Verifier</th> */}
               <th className="p-2">Date</th>
             </tr>
           </thead>
@@ -66,13 +66,13 @@ export default function VerifierHome() {
               <tr key={log._id} className="border-b">
                 <td className="p-2">{log.licenseNumber}</td>
                 <td
-                  className={`p-2 font-semibold ${
-                    log.status === "VALID" ? "text-green-600" : "text-red-600"
+                  className={`p-2 font-semibold capitalize ${
+                    log.status === "success" ? "text-green-600" : "text-red-600"
                   }`}
                 >
                   {log.status}
                 </td>
-                <td className="p-2">{log.verifierOrg}</td>
+                {/* <td className="p-2">{log.verifierOrg}</td> */}
                 <td className="p-2">
                   {new Date(log.createdAt).toLocaleString()}
                 </td>
