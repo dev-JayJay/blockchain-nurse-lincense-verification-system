@@ -3,17 +3,16 @@ import {
   addNurse,
   getNurse,
   getAllNurses,
+  updateNurseStatus,
+  revokeNurseLicense,
 } from "../controllers/nurseController.js";
 
 const router = express.Router();
 
-// Create new nurse
 router.post("/", addNurse);
-
-// Get all nurses
 router.get("/", getAllNurses);
-
-// Get a nurse by license number
 router.get("/:licenseNumber", getNurse);
+router.patch("/:licenseNumber/status", updateNurseStatus);
+router.patch("/:licenseNumber/revoke", revokeNurseLicense);
 
 export default router;
