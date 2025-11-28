@@ -1,4 +1,5 @@
 import Nurse from "../models/Nurse.js";
+import VerificationLog from "../models/VerificationLog.js";
 import crypto from "crypto";
 import { registerNurseOnChain } from "../../nurseBlockchain.js";
 
@@ -57,8 +58,22 @@ export const getNurse = async (req, res) => {
     const nurse = await Nurse.findOne({
       licenseNumber: req.params.licenseNumber,
     });
-    if (!nurse) return res.status(404).json({ error: "Nurse not found" });
-    res.json(nurse);
+    if (nurse) {
+      await VerificationLog.create({
+        verifierId: req.params.verifierId,
+        licenseNumber: req.params.licenseNumber,
+        status: "success",
+      });
+
+      return res.json(nurse);
+    } else {
+      await VerificationLog.create({
+        verifierId: req.params.verifierId,
+        licenseNumber: req.params.licenseNumber,
+        status: "invalid",
+      });
+      return res.status(404).json({ error: "Nurse not found" });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

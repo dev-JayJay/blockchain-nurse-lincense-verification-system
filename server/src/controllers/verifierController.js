@@ -1,4 +1,5 @@
 import Verifier from "../models/Verifier.js";
+import VerificationLog from "../models/VerificationLog.js";
 
 export const submitVerifierRegistration = async (req, res) => {
   try {
@@ -83,9 +84,38 @@ export const rejectVerifier = async (req, res) => {
       { new: true }
     );
     if (!v) return res.status(404).json({ error: "not found" });
-    // TODO: notify via email
     return res.json({ success: true, verifier: v });
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  }
+};
+
+export const start = async (req, res) => {
+  try {
+    const totalVerified = await VerificationLog.countDocuments();
+    const successCount = await VerificationLog.countDocuments({
+      status: "success",
+    });
+    const invalidCount = await VerificationLog.countDocuments({
+      status: "invalid",
+    });
+
+    res.json({
+      totalVerified,
+      successCount,
+      invalidCount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const logs = async (req, res) => {
+  try {
+    const logs = await VerificationLog.find().sort({ createdAt: -1 }).limit(10);
+
+    res.json(logs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

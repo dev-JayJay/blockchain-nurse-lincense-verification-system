@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function VerifyLicense() {
+    const { user } = useAuth();
+    console.log("this is the user", user);
   const [licenseId, setLicenseId] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -11,13 +14,14 @@ export default function VerifyLicense() {
   };
 
   const handleVerify = async () => {
+    if (!user) return;
     if (!licenseId.trim()) return;
 
     setLoading(true);
     setResult(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/nurses/${licenseId}`);
+      const res = await fetch(`http://localhost:5000/api/nurses/${licenseId}/${user.id}`);
 
       if (!res.ok) {
         setResult({ status: "INVALID" });

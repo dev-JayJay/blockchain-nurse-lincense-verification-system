@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/", addNurse);
 router.get("/", getAllNurses);
-router.get("/:licenseNumber", getNurse);
+router.get("/:licenseNumber/:verifierId", getNurse);
 router.patch("/:licenseNumber/status", updateNurseStatus);
 router.patch("/:licenseNumber/revoke", revokeNurseLicense);
 
