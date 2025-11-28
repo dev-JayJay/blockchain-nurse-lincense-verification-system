@@ -16,20 +16,29 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/admin/login`, form);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/admin/login`,
+        form
+      );
+
+      const token = res.data.token;
+
+      // Decode token role
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const role = payload.role?.toLowerCase();
+
+      const user = { ...res.data.user, role };
+
+      login(user);
 
       toast.success("Login successful!");
 
-      
-      login(res.data.user);
-
-      // Redirect based on role
-      if (res.data.user.role === "admin") {
+      // Redirect
+      if (role === "admin") {
         navigate("/admin/dashboard");
-      }  else {
+      } else {
         navigate("/verifier/home");
       }
-
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     }
@@ -38,9 +47,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800 text-center">
-          Login
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-800 text-center">Login</h1>
         <p className="text-gray-600 text-center">
           Enter your credentials to access your account
         </p>
@@ -83,10 +90,7 @@ export default function Login() {
         </form>
 
         <div className="text-center">
-          <a
-            href="#"
-            className="text-blue-600 hover:underline text-sm"
-          >
+          <a href="#" className="text-blue-600 hover:underline text-sm">
             Forgot password?
           </a>
         </div>

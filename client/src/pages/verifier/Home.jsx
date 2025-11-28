@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function VerifierHome() {
-  const { user } = useAuth();
-  console.log("this is the user", user);
   const [stats, setStats] = useState({
     totalVerified: 0,
     successCount: 0,

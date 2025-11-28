@@ -1,91 +1,76 @@
-import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Profile() {
-  const [form, setForm] = useState({
-    name: "John Doe",
-    email: "admin@example.com",
-    password: "",
-    confirmPassword: "",
-  });
+  const { user, logout } = useAuth();
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Profile updated!");
-    // Integrate API call to update admin profile
-  };
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Admin Profile</h1>
+    <div className="min-h-screen w-full  bg-gray-100 p-6">
+      <div className="max-w-md w-full space-y-6">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Admin Profile
+        </h1>
 
-      <div className="bg-white shadow rounded-xl p-6 max-w-md">
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+        <div className="bg-white p-6 rounded-lg shadow space-y-6">
+
+          {/* Full name */}
+          <div className="space-y-1">
+            <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+              Full Name
+            </h2>
+            <p className="text-lg text-gray-900 font-medium">
+              {user.firstName} {user.lastName}
+            </p>
           </div>
 
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
+          {/* Username */}
+          <div className="border-t pt-4 space-y-1">
+            <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+              Username
+            </h2>
+            <p className="text-lg text-gray-900 font-medium">{user.username}</p>
+          </div>
+
+          {/* Email */}
+          <div className="border-t pt-4 space-y-1">
+            <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
               Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            </h2>
+            <p className="text-lg text-gray-900 font-medium">{user.email}</p>
           </div>
 
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Leave blank to keep current password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          {/* Department */}
+          <div className="border-t pt-4 space-y-1">
+            <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+              Department
+            </h2>
+            <p className="text-lg text-gray-900 font-medium">
+              {user.department || "N/A"}
+            </p>
           </div>
 
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              placeholder="Leave blank to keep current password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          {/* Role */}
+          <div className="border-t pt-4 space-y-1">
+            <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+              Role
+            </h2>
+            <p className="text-lg text-gray-900 font-medium capitalize">
+              {user.role}
+            </p>
           </div>
 
           <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            onClick={logout}
+            className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition"
           >
-            Update Profile
+            Logout
           </button>
-        </form>
+
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function VerifyLicense() {
     const { user } = useAuth();
-    console.log("this is the user", user);
   const [licenseId, setLicenseId] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
