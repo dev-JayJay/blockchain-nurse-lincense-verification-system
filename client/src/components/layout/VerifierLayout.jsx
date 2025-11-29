@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function VerifierLayout() {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
   const menuItems = [
@@ -11,14 +13,13 @@ export default function VerifierLayout() {
     { label: "Profile", to: "/verifier/profile" },
   ];
 
-  
-
   return (
     <div className="min-h-screen flex bg-gray-100">
-
       {/* ---------------- SIDEBAR (DESKTOP) ---------------- */}
       <aside className="hidden md:flex md:flex-col w-64 bg-white shadow-lg px-4 py-6">
-        <h2 className="text-xl font-bold mb-8 text-blue-600">Verifier Portal</h2>
+        <h2 className="text-xl font-bold mb-8 text-blue-600">
+          Verifier Portal
+        </h2>
 
         <nav className="flex flex-col gap-3">
           {menuItems.map((item) => (
@@ -27,7 +28,11 @@ export default function VerifierLayout() {
               to={item.to}
               className={({ isActive }) =>
                 `px-4 py-2 rounded-lg font-medium transition 
-                ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-200"}`
+                ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-200"
+                }`
               }
             >
               {item.label}
@@ -38,7 +43,10 @@ export default function VerifierLayout() {
 
       {/* ---------------- MOBILE SIDEBAR ---------------- */}
       {open && (
-        <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
 
       <aside
@@ -60,7 +68,11 @@ export default function VerifierLayout() {
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `px-4 py-2 rounded-lg font-medium transition 
-                ${isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-200"}`
+                ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-200"
+                }`
               }
             >
               {item.label}
@@ -71,26 +83,26 @@ export default function VerifierLayout() {
 
       {/* ---------------- MAIN CONTENT ---------------- */}
       <div className="flex-1 flex flex-col">
-
         {/* HEADER */}
         <header className="bg-white shadow-md h-16 flex items-center justify-between px-4 md:px-6">
           {/* Mobile menu button */}
           <button onClick={() => setOpen(true)} className="md:hidden">
             <Menu size={26} />
           </button>
-
           {/* Center title or dynamic */}
-          <h1 className="font-semibold text-xl text-gray-800">Verifier Panel</h1>
-
+          <h1 className="font-semibold text-xl text-gray-800">
+            Verifier Panel
+          </h1>
           {/* User avatar */}
-          <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-300 rounded-full capitalize flex items-center justify-center">
+            {user.email.slice(0, 2)}
+          </div>{" "}
         </header>
 
         {/* PAGE CONTENT */}
         <main className="p-4 md:p-6">
           <Outlet />
         </main>
-
       </div>
     </div>
   );

@@ -1,31 +1,89 @@
+import { useAuth } from "../../context/AuthContext";
+
 export default function Profile() {
+  const { user, logout } = useAuth();
+
+  if (!user) return <p>Loading...</p>;
+
   return (
-    <div className="space-y-6 max-w-md">
+    <div className="max-w-md space-y-6">
       <h1 className="text-3xl font-bold text-gray-800">Verifier Profile</h1>
 
-      <div className="bg-white p-6 rounded-lg shadow space-y-4">
-        <div>
-          <h2 className="text-gray-600 font-semibold">Organization Name</h2>
-          <p className="text-gray-800">City Hospital</p>
+      <div className="bg-white p-6 rounded-lg shadow space-y-6">
+        {/* Organization Name */}
+        <div className="space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Organization Name
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">{user.orgName}</p>
         </div>
 
-        <div>
-          <h2 className="text-gray-600 font-semibold">Contact Person</h2>
-          <p className="text-gray-800">John Doe</p>
+        {/* Organization Type */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Organization Type
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">{user.orgType}</p>
         </div>
 
-        <div>
-          <h2 className="text-gray-600 font-semibold">Email</h2>
-          <p className="text-gray-800">contact@hospital.com</p>
+        {/* Contact Person */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Contact Person
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">
+            {user.rep.firstName ?? ""} {user.rep.middleName ?? ""}{" "}
+            {user.rep.lastName ?? ""}
+          </p>
         </div>
 
-        <div>
-          <h2 className="text-gray-600 font-semibold">Phone</h2>
-          <p className="text-gray-800">+123 456 7890</p>
+        {/* Email */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Email
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">{user.email}</p>
         </div>
 
-        <button className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition w-full">
-          Edit Profile
+        {/* Phone */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Phone
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">{user.phone}</p>
+        </div>
+
+        {/* Address */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Address
+          </h2>
+          <p className="text-lg text-gray-900 font-medium">{user.address}</p>
+        </div>
+
+        {/* Status */}
+        <div className="border-t pt-4 space-y-1">
+          <h2 className="text-sm text-gray-500 uppercase tracking-wide font-semibold">
+            Account Status
+          </h2>
+          <span
+            className={`px-3 py-1 rounded text-sm font-medium ${
+              user.status === "approved"
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            {user.status}
+          </span>
+        </div>
+        <button
+          onClick={() => {
+            logout();
+            window.location.href = "/login";
+          }}
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        >
+          Logout
         </button>
       </div>
     </div>

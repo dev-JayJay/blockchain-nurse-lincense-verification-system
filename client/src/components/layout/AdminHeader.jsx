@@ -9,7 +9,7 @@ export default function AdminHeader() {
       <h1 className="text-lg font-semibold">Regulatory Admin</h1>
 
       <div className="flex items-center gap-4">
-        <span className="font-medium">{user?.name || "Admin"}</span>
+        <span className="font-medium">{user?.email || "Admin"}</span>
 
         <button
           onClick={logout}
