@@ -1,7 +1,15 @@
 import { Users, UserPlus, ShieldCheck, Clock, UserCog, FileCheck } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Dashboard() {
+  const [stats, setStats] = useState();
+  useEffect(() => {
+    // Fetch metrics
+    fetch(`http://localhost:5000/api/admin/logs`)
+      .then((res) => res.json())
+      .then((data) => setStats(data));
+  }, []);
   return (
     <div className="space-y-8">
 
@@ -18,7 +26,7 @@ export default function Dashboard() {
           <Clock size={40} className="text-blue-600" />
           <div>
             <h2 className="text-lg font-semibold text-gray-700">Pending Verifiers</h2>
-            <p className="text-3xl font-bold text-blue-600 mt-1">12</p>
+            <p className="text-3xl font-bold text-blue-600 mt-1">{stats?.pendingVerifiers}</p>
           </div>
         </div>
 
@@ -26,7 +34,7 @@ export default function Dashboard() {
           <ShieldCheck size={40} className="text-green-600" />
           <div>
             <h2 className="text-lg font-semibold text-gray-700">Active Verifiers</h2>
-            <p className="text-3xl font-bold text-green-600 mt-1">34</p>
+            <p className="text-3xl font-bold text-green-600 mt-1">{stats?.activeVerifiers}</p>
           </div>
         </div>
 
@@ -34,7 +42,7 @@ export default function Dashboard() {
           <FileCheck size={40} className="text-purple-600" />
           <div>
             <h2 className="text-lg font-semibold text-gray-700">Registered Licenses</h2>
-            <p className="text-3xl font-bold text-purple-600 mt-1">780</p>
+            <p className="text-3xl font-bold text-purple-600 mt-1">{stats?.licenses}</p>
           </div>
         </div>
       </div>

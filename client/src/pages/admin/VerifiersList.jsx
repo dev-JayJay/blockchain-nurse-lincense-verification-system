@@ -6,6 +6,7 @@ export default function VerifiersList() {
   const [verifiers, setVerifiers] = useState([]);
   const [loading, setLoading] = useState(false);
 
+
   // Fetch pending verifiers
   const fetchVerifiers = async () => {
     try {
@@ -60,6 +61,8 @@ export default function VerifiersList() {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 text-left">Organization</th>
+              <th className="px-4 py-2 text-left">CAC</th>
+              <th className="px-4 py-2 text-left">Tin</th>
               <th className="px-4 py-2 text-left">Email</th>
               <th className="px-4 py-2 text-left">Status</th>
               <th className="px-4 py-2 text-left">Actions</th>
@@ -82,6 +85,8 @@ export default function VerifiersList() {
               verifiers.map((v) => (
                 <tr key={v._id} className="border-b">
                   <td className="px-4 py-2">{v.orgName}</td>
+                  <td className="px-4 py-2">{v.cacNumber}</td>
+                  <td className="px-4 py-2">{v.tin}</td>
                   <td className="px-4 py-2">{v.email}</td>
                   <td className="px-4 py-2">{v.status}</td>
                   <td className="px-4 py-2 space-x-2">

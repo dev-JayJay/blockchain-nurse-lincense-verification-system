@@ -1,4 +1,5 @@
 import Admin from "../models/Admin.js";
+import Nurse from "../models/Nurse.js";
 import Verifier from "../models/Verifier.js";
 import jwt from "jsonwebtoken";
 
@@ -150,3 +151,22 @@ export const getAdmins = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+export const getAdminlogs = async (req, res) => {
+  try {
+    const pendingVerifiers = await Verifier.countDocuments({ status: "Pending" });
+    const activeVerifiers = await Verifier.countDocuments({ status: "Approved" });
+    const licenses = await Nurse.countDocuments();
+
+    res.json({
+      pendingVerifiers,
+      activeVerifiers,
+      licenses,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}

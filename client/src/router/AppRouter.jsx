@@ -26,16 +26,16 @@ import VerifyLicense from "../pages/verifier/VerifyLicense";
 import VerifierProfile from "../pages/verifier/Profile";
 import Profile from "../pages/admin/Profile";
 import AddAdmin from "../pages/admin/AddAdmin";
+import LandingPage from "../pages/home";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* -------------------- PUBLIC -------------------- */}
+        <Route path={ROUTES.PUBLIC.LANDING_PAGE} element={<LandingPage />} />
         <Route path={ROUTES.PUBLIC.LOGIN} element={<Login />} />
         <Route path={ROUTES.PUBLIC.VERIFIER_REGISTER} element={<Register />} />
-
         {/* -------------------- ADMIN -------------------- */}
         <Route
           path="/admin"

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
+import { ArrowLeft, MoveLeft } from "lucide-react";
 
 export default function Login() {
   const [form, setForm] = useState({ emailOrUsername: "", password: "" });
@@ -47,6 +48,9 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
+       <a href="/" className="text-blue-600 text-lg hover:underline flex items-center gap-2 justify-start">
+            <ArrowLeft /> Back 
+          </a>
         <h1 className="text-3xl font-bold text-gray-800 text-center">Login</h1>
         <p className="text-gray-600 text-center">
           Enter your credentials to access your account

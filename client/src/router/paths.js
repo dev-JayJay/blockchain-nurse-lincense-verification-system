@@ -1,5 +1,6 @@
 export const ROUTES = {
   PUBLIC: {
+    LANDING_PAGE: '/',
     LOGIN: "/login",
     VERIFIER_REGISTER: "/verifier/register",
   },
