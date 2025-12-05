@@ -11,32 +11,46 @@ export default function Register() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [step1Data, setStep1Data] = useState({});
 
   // Use the right schema depending on the step
   const currentSchema = step === 1 ? step1Schema : step2Schema;
 
   const methods = useForm({
     resolver: zodResolver(currentSchema),
-    mode: "onTouched", // validate on blur
+    mode: "onTouched",
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    trigger, // manually trigger validation
+    trigger,
     reset,
   } = methods;
 
   const nextStep = async () => {
-    const valid = await trigger(); // validate current step fields
+    const valid = await trigger();
     if (!valid) return;
+    setStep1Data(methods.getValues());
     setStep(2);
   };
 
   const goBack = () => setStep(1);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (step2Data) => {
+    const data = {
+      ...step1Data,
+      password: step2Data.password,
+      rep: {
+        firstName: step2Data.repFirstName,
+        middleName: step2Data.repMiddleName,
+        lastName: step2Data.repLastName,
+        title: step2Data.repTitle,
+        address: step2Data.repAddress,
+        email: step2Data.repEmail,
+      },
+    };
     setLoading(true);
     try {
       await axios.post(
@@ -95,7 +109,11 @@ export default function Register() {
                   <label className="block mb-1 font-medium">
                     Organization Name *
                   </label>
-                  <input {...register("orgName")} className="input" placeholder="Organization" />
+                  <input
+                    {...register("orgName")}
+                    className="input"
+                    placeholder="Organization"
+                  />
                   {errors.orgName && (
                     <p className="text-red-600 text-sm mt-1">
                       {errors.orgName.message}
@@ -172,6 +190,7 @@ export default function Register() {
                   <input
                     {...register("phone")}
                     placeholder="Phone"
+                    type="number"
                     className="input"
                   />
                   {errors.phone && (
@@ -280,7 +299,7 @@ export default function Register() {
                 <div>
                   <input
                     {...register("repAddress")}
-                    placeholder="Rep Address"
+                    placeholder="Staff ID"
                     className="input"
                   />
                   {errors.repAddress && (

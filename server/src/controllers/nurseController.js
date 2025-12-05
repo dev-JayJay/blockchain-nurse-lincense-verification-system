@@ -2,6 +2,7 @@ import Nurse from "../models/Nurse.js";
 import VerificationLog from "../models/VerificationLog.js";
 import crypto from "crypto";
 import { registerNurseOnChain } from "../../nurseBlockchain.js";
+import { sendEmail } from "../utils/mailer.js";
 
 // Add a new nurse
 export const addNurse = async (req, res) => {
@@ -41,6 +42,21 @@ export const addNurse = async (req, res) => {
     nurse.blockchainTx = txHash;
     await nurse.save();
 
+    await sendEmail({
+      to: form.email,
+      subject: "Your Verifier Registration Has Been Approved",
+      html: `
+        <h2>Congratulations ${form.firstName ?? ""} ${form.lastName ?? ""}!</h2>
+    
+        <p>Your Nurse License Account has been created and activated by the admin.</p>
+        <p>You can now start Jobs Application and getting your credentials  verify.</p>
+    
+    
+        <p>Best regards,</p>
+        <p><strong>The Admin Team</strong></p>
+      `,
+    });
+
     res.status(201).json({
       success: true,
       nurseId: nurse.internalNurseId,
@@ -75,6 +91,7 @@ export const getNurse = async (req, res) => {
       return res.status(404).json({ error: "Nurse not found" });
     }
   } catch (err) {
+    console.log("error", err);
     res.status(500).json({ error: err.message });
   }
 };

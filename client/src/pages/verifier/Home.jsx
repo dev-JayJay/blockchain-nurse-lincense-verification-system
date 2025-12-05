@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function VerifierHome() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalVerified: 0,
     successCount: 0,
@@ -12,19 +15,22 @@ export default function VerifierHome() {
 
   useEffect(() => {
     // Fetch metrics
-    fetch("http://localhost:5000/api/verifier/stats")
+    fetch(`http://localhost:5000/api/verifier/stats/${user._id}`)
       .then((res) => res.json())
       .then((data) => setStats(data));
 
     // Fetch recent logs
-    fetch("http://localhost:5000/api/verifier/logs")
+    fetch(`http://localhost:5000/api/verifier/logs/${user._id}`)
       .then((res) => res.json())
       .then((data) => setLogs(data));
   }, []);
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-gray-800">Welcome, Verifier!</h1>
+      <h1 className="text-3xl font-bold text-gray-800">
+        Welcome, {user.rep.firstName ?? ""} {user.rep.middleName ?? ""}{" "}
+        {user.rep.lastName ?? ""}!
+      </h1>
       <p className="text-gray-600">
         Review your verification activity and track logs.
       </p>
@@ -38,18 +44,31 @@ export default function VerifierHome() {
 
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold">Successful</h2>
-          <p className="mt-2 text-3xl font-bold text-green-600">{stats.successCount}</p>
+          <p className="mt-2 text-3xl font-bold text-green-600">
+            {stats.successCount}
+          </p>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold">Invalid Attempts</h2>
-          <p className="mt-2 text-3xl font-bold text-red-600">{stats.invalidCount}</p>
+          <p className="mt-2 text-3xl font-bold text-red-600">
+            {stats.invalidCount}
+          </p>
         </div>
       </div>
 
       {/* LOG TABLE */}
       <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Recent Verification Logs</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Recent Verification Logs</h2>
+
+          <button
+            onClick={() => navigate("/verifier/logs")}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            View All Logs →
+          </button>
+        </div>
 
         <table className="w-full text-left">
           <thead>

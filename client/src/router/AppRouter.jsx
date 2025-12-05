@@ -27,6 +27,7 @@ import VerifierProfile from "../pages/verifier/Profile";
 import Profile from "../pages/admin/Profile";
 import AddAdmin from "../pages/admin/AddAdmin";
 import LandingPage from "../pages/home";
+import AllLogs from "../pages/verifier/AllLogs";
 
 export default function AppRouter() {
   return (
@@ -72,6 +73,7 @@ export default function AppRouter() {
           <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<VerifierHome />} />
           <Route path="verify" element={<VerifyLicense />} />
+          <Route path="logs" element={<AllLogs />} />
           <Route path="profile" element={<VerifierProfile />} />
         </Route>
 

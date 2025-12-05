@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function VerifyLicense() {
-    const { user } = useAuth();
+  const { user } = useAuth();
   const [licenseId, setLicenseId] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function VerifyLicense() {
     setResult(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/nurses/${licenseId}/${user.id}`);
+      const res = await fetch(`http://localhost:5000/api/nurses/${licenseId}/${user._id}`);
 
       if (!res.ok) {
         setResult({ status: "INVALID" });

@@ -10,6 +10,7 @@ export default function VerifierLayout() {
   const menuItems = [
     { label: "Home", to: "/verifier/home" },
     { label: "Verify License", to: "/verifier/verify" },
+    { label: "Logs", to: "/verifier/logs" },
     { label: "Profile", to: "/verifier/profile" },
   ];
 

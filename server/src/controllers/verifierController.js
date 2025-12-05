@@ -5,12 +5,22 @@ import { sendEmail } from "../utils/mailer.js";
 export const submitVerifierRegistration = async (req, res) => {
   try {
     const body = req.body;
+    const existingMail = await Verifier.findOne({ email: body.email });
 
-    const existing = await Verifier.findOne({ email: body.email });
-    if (existing) {
+    if (existingMail) {
       return res
         .status(400)
-        .json({ message: "Verifier with this email already exists" });
+        .json({ message: "Organization email already exists" });
+    }
+
+    const existingRepMail = await Verifier.findOne({
+      "rep.email": body.rep.email,
+    });
+
+    if (existingRepMail) {
+      return res
+        .status(400)
+        .json({ message: "Representative email already exists" });
     }
 
     const v = new Verifier({
@@ -52,6 +62,17 @@ export const listPendingVerifiers = async (req, res) => {
     });
     return res.json(pending);
   } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAllVerifiers = async (req, res) => {
+  try {
+    const allVerifiers = await Verifier.find().sort({
+      createdAt: -1,
+    });
+    return res.json(allVerifiers);
+  } catch (error) {
     return res.status(500).json({ error: err.message });
   }
 };
@@ -146,12 +167,14 @@ export const rejectVerifier = async (req, res) => {
 
 export const start = async (req, res) => {
   try {
-    const totalVerified = await VerificationLog.countDocuments();
+    const totalVerified = await VerificationLog.countDocuments({verifierId: req.params.id});
     const successCount = await VerificationLog.countDocuments({
       status: "success",
+      verifierId: req.params.id
     });
     const invalidCount = await VerificationLog.countDocuments({
       status: "invalid",
+      verifierId: req.params.id
     });
 
     res.json({
@@ -166,8 +189,7 @@ export const start = async (req, res) => {
 
 export const logs = async (req, res) => {
   try {
-    const logs = await VerificationLog.find().sort({ createdAt: -1 }).limit(10);
-
+    const logs = await VerificationLog.find({verifierId: req.params.id}).sort({ createdAt: -1 }).limit(5);
     res.json(logs);
   } catch (err) {
     res.status(500).json({ error: err.message });
